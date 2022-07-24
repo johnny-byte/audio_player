@@ -1,5 +1,6 @@
 import 'package:audio_player/audio_repository.dart';
 import 'package:audio_player/player.dart';
+import 'package:audio_player/widget/player_panel/player_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audio_player/playlist_page/cubit/playlist_page_cubit.dart';
@@ -17,6 +18,7 @@ class PlaylistPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(),
         body: const PlaylistView(),
+        bottomSheet: const PlayerPanel(),
       ),
     );
   }

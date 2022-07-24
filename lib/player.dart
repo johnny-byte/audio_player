@@ -1,5 +1,18 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_player/model/playlist.dart';
+import 'package:rxdart/rxdart.dart';
+
+class PlaybackData {
+  final Duration duration;
+  final Duration position;
+  final bool playing;
+
+  PlaybackData({
+    required this.playing,
+    required this.duration,
+    required this.position,
+  });
+}
 
 class Player extends AudioPlayer {
   Playlist? _playlist;
@@ -7,6 +20,20 @@ class Player extends AudioPlayer {
   Player() : super();
 
   Playlist? get playlist => _playlist;
+
+  Stream<PlaybackData> get playbackDataStream => CombineLatestStream.combine3(
+        durationStream,
+        positionStream,
+        playingStream,
+        (Duration? duration, Duration position, bool playing) =>
+            duration == null
+                ? null
+                : PlaybackData(
+                    duration: duration,
+                    position: position,
+                    playing: playing,
+                  ),
+      ).whereNotNull();
 
   Future<void> checkedPlay(
     Playlist playlist,
