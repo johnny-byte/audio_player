@@ -1,3 +1,4 @@
+import 'package:audio_player/player.dart';
 import 'package:audio_player/playlist_page/view/playlist_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,11 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AudioRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => AudioRepository()),
+        RepositoryProvider(create: (context) => Player()),
+      ],
       child: MaterialApp(home: PlaylistPage()),
     );
   }

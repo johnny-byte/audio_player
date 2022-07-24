@@ -1,4 +1,5 @@
 import 'package:audio_player/audio_repository.dart';
+import 'package:audio_player/player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:audio_player/playlist_page/cubit/playlist_page_cubit.dart';
@@ -9,7 +10,10 @@ class PlaylistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PlaylistPageCubit(context.read<AudioRepository>()),
+      create: (context) => PlaylistPageCubit(
+        audioRepository: context.read<AudioRepository>(),
+        player: context.read<Player>(),
+      ),
       child: Scaffold(
         appBar: AppBar(),
         body: const PlaylistView(),
@@ -32,9 +36,8 @@ class PlaylistView extends StatelessWidget {
           return ListView.builder(
             itemCount: state.playlist.length,
             itemBuilder: (context, index) => ListTile(
-              title: Text(
-                state.playlist[index].name,
-              ),
+              title: Text(state.playlist[index].name),
+              onTap: () => context.read<PlaylistPageCubit>().play(index),
             ),
           );
         }
