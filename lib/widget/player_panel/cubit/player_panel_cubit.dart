@@ -9,20 +9,14 @@ part 'player_panel_state.dart';
 
 class PlayerPanelCubit extends Cubit<PlayerPanelState> {
   final Player _player;
-  late final StreamSubscription<PlaybackData> _subscription;
+  late final StreamSubscription<Duration?> _subscription;
 
   PlayerPanelCubit(this._player) : super(PlayerPanelDisable()) {
-    _subscription = _player.playbackDataStream.listen((data) {
-      if (data.playing) {
-        emit(PlayerPanelPlaying(
-          position: data.position,
-          duration: data.duration,
-        ));
-      } else {
-        emit(PlayerPanelPause(
-          position: data.position,
-          duration: data.duration,
-        ));
+    //TODO fix this
+    _subscription = _player.durationStream.listen((event) {
+      if (event != null) {
+        emit(PlayerPanelEnable());
+        _subscription.cancel();
       }
     });
   }
@@ -40,10 +34,4 @@ class PlayerPanelCubit extends Cubit<PlayerPanelState> {
   void seekToPrevious() => _player.seekToPrevious();
 
   void seekToNext() => _player.seekToNext();
-
-  @override
-  Future<void> close() {
-    _subscription.cancel();
-    return super.close();
-  }
 }
