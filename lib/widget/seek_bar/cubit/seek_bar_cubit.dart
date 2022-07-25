@@ -19,11 +19,9 @@ class SeekBarCubit extends Cubit<SeekBarState> {
   }
 
   //TODO maybe ui bug when data comes from _subscription
-  void seek(double value) {
-    assert(0 <= value && value <= 1);
-    final position = state._duration * value;
-    _player.seek(state._duration * value);
-    emit(SeekBarUpdate(position: position, duration: state._duration));
+  void seek(Duration position) {
+    _player.seek(position);
+    emit(SeekBarUpdate(position: position, duration: state.duration));
   }
 
   @override

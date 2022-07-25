@@ -29,7 +29,8 @@ class _SmallSeekBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SeekBarCubit, SeekBarState>(
-      builder: (context, state) => LinearProgressIndicator(value: state.value),
+      builder: (context, state) => LinearProgressIndicator(
+          value: state.position.inMilliseconds / state.duration.inMilliseconds),
     );
   }
 }
@@ -50,7 +51,10 @@ class _BigSeekBarState extends State<_BigSeekBar> {
     return BlocBuilder<SeekBarCubit, SeekBarState>(
       builder: (context, state) {
         return Slider(
-          value: _isChanged ? _changedValue : state.value,
+          value: _isChanged
+              ? _changedValue
+              : state.position.inMilliseconds.toDouble(),
+          max: state.duration.inMilliseconds.toDouble(),
           onChangeStart: (value) {
             _isChanged = true;
           },
@@ -61,7 +65,9 @@ class _BigSeekBarState extends State<_BigSeekBar> {
           },
           onChangeEnd: (value) {
             _isChanged = false;
-            context.read<SeekBarCubit>().seek(value);
+            context
+                .read<SeekBarCubit>()
+                .seek(Duration(milliseconds: value.toInt()));
           },
         );
       },

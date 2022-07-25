@@ -1,17 +1,13 @@
 part of 'seek_bar_cubit.dart';
 
 abstract class SeekBarState extends Equatable {
-  final Duration _position;
-  final Duration _duration;
+  final Duration position;
+  final Duration duration;
 
-  const SeekBarState({required Duration position, required Duration duration})
-      : _position = position,
-        _duration = duration;
-
-  double get value => _position.inMilliseconds / _duration.inMilliseconds;
+  const SeekBarState({required this.position, required this.duration});
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [position, duration];
 }
 
 class SeekBarInitial extends SeekBarState {

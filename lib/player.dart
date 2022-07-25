@@ -30,7 +30,8 @@ class Player extends AudioPlayer {
                 ? null
                 : PlaybackData(
                     duration: duration,
-                    position: position,
+                    // position can be greater than duration
+                    position: position < duration ? position : duration,
                     playing: playing,
                   ),
       ).whereNotNull();
