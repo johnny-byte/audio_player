@@ -1,6 +1,7 @@
 import 'package:audio_player/audio_repository.dart';
 import 'package:audio_player/playlist_page/view/playlist_page_view.dart';
 import 'package:audio_player/widget/player_panel/view/player_panel_widget.dart';
+import 'package:audio_player/youtube_page/youtube_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,22 +32,19 @@ class AllPlaylistPageView extends StatelessWidget {
           Material(
             color: Colors.red,
             child: InkWell(
-              child: const Center(child: Text("text")),
+              child: const Center(child: Text("YOUTUBE")),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlaylistPage(context
-                          .read<AudioRepository>()
-                          .loadLocalStorageAudio()),
-                    ));
+                  context,
+                  MaterialPageRoute(builder: (context) => const YoutubePage()),
+                );
               },
             ),
           ),
           Material(
             color: Colors.blue,
             child: InkWell(
-              child: const Center(child: Text("text")),
+              child: const Center(child: Text("LOCAL")),
               onTap: () {
                 Navigator.push(
                     context,
@@ -61,7 +59,7 @@ class AllPlaylistPageView extends StatelessWidget {
           Material(
             color: Colors.amber,
             child: InkWell(
-              child: const Center(child: Text("text")),
+              child: const Center(child: Text("TODO")),
               onTap: () {
                 Navigator.push(
                     context,

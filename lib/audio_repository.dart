@@ -1,10 +1,46 @@
 import 'dart:io';
 import 'package:audio_player/model/audio.dart';
 import 'package:audio_player/model/playlist.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as youtube;
 
 class AudioRepository {
   Playlist? _localStoragePlaylist;
+
+  void _parseDescription(String text) {
+    var exp = RegExp(r"((?<hours>\d*):)?(?<minutes>\d{1,2}):(?<seconds>\d\d)");
+    print("start parse");
+    for (var line in text.split('\n')) {
+      var match = exp.firstMatch(line);
+      if (match != null) {
+        print(line);
+        var hours = int.parse(match.namedGroup("hours") ?? "0");
+        var minutes = int.parse(match.namedGroup("minutes") ?? "0");
+        var seconds = int.parse(match.namedGroup("seconds") ?? "0");
+        var dur = Duration(hours: hours, minutes: minutes, seconds: seconds);
+        print(dur);
+      }
+    }
+  }
+
+  Future<Playlist> loadYoutubeAudio(String url) async {
+    try {
+      var yt = youtube.YoutubeExplode();
+      var video = await yt.videos.get(url);
+      // print(video);
+      _parseDescription(video.description);
+      var manifest = await yt.videos.streamsClient.getManifest(url);
+      var source = manifest.audioOnly.withHighestBitrate();
+
+      return Playlist(audioList: [Audio.fromYoutube(source.url)]);
+    } on FormatException catch (e) {
+      //TODO
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Future<Playlist> loadLocalStorageAudio() async {
     if (_localStoragePlaylist == null) {
@@ -40,6 +76,7 @@ class AudioRepository {
           }
         }
       }
+      //TODO
       await Future.delayed(const Duration(milliseconds: 500));
       _localStoragePlaylist = Playlist(audioList: audioList);
     }

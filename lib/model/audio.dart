@@ -11,4 +11,9 @@ class Audio {
       : name = path,
         color = Color(Random().nextInt(0xDDDDDDDD)),
         source = AudioSource.uri(Uri.file(path));
+
+  Audio.fromYoutube(Uri url)
+      : name = url.toString(),
+        color = Color(Random().nextInt(0xDDDDDDDD)),
+        source = AudioSource.uri(url);
 }
