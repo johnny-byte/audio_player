@@ -11,6 +11,7 @@ class ControlButtons extends StatelessWidget {
     return BlocProvider(
       create: (context) => ControlButtonsCubit(context.read<Player>()),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           _SkipPreviousButton(),
           _PlayPauseButton(),
