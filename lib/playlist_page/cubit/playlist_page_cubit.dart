@@ -8,15 +8,13 @@ import 'package:meta/meta.dart';
 part 'playlist_page_state.dart';
 
 class PlaylistPageCubit extends Cubit<PlaylistPageState> {
-  final AudioRepository audioRepository;
   final Player player;
 
   PlaylistPageCubit({
-    required this.audioRepository,
     required this.player,
+    required Future<Playlist> playlistFuture,
   }) : super(PlaylistPageLoading()) {
-    audioRepository
-        .loadLocalStorageAudio()
+    playlistFuture
         //TODO error handler
         .then((playlist) => emit(PlaylistPageLoaded(playlist)));
   }

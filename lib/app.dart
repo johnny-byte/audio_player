@@ -1,3 +1,4 @@
+import 'package:audio_player/all_playlist_page/view/all_playlist_page_view.dart';
 import 'package:audio_player/player.dart';
 import 'package:audio_player/playlist_page/view/playlist_page_view.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
         RepositoryProvider(create: (context) => AudioRepository()),
         RepositoryProvider(create: (context) => Player()),
       ],
-      child: MaterialApp(home: PlaylistPage()),
+      child: MaterialApp(home: AllPlaylistPage()),
     );
   }
 }
